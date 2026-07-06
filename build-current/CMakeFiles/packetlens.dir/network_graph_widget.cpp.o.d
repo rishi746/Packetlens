@@ -418,6 +418,8 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qelapsedtimer.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/qpoint.h \
  /home/kali/Documents/PacketLens/flow_manager.h /usr/include/c++/15/mutex \
  /usr/include/c++/15/bits/std_mutex.h \
  /usr/include/c++/15/bits/unique_lock.h /usr/include/arpa/inet.h \
@@ -491,6 +493,9 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QResizeEvent \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QPen \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollBar \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollbar.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractslider.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QRandomGenerator \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qrandom.h \
  /usr/include/c++/15/random /usr/include/c++/15/bits/random.h \
@@ -500,5 +505,7 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qapplication.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QVector \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qvector.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/QSet \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/qset.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QtMath \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qmath.h

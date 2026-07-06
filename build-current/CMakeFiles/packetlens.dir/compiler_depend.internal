@@ -343,6 +343,7 @@
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QAbstractTableModel
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QMap
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QStringList
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer
@@ -481,6 +482,7 @@
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qxptype_traits.h
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qyieldcpu.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qaction.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qbitmap.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qbrush.h
@@ -495,6 +497,7 @@
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h
@@ -511,6 +514,7 @@
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtguiglobal.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel
@@ -518,6 +522,7 @@
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h
@@ -2606,6 +2611,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o
  /home/kali/Documents/PacketLens/main_window.cpp
  /home/kali/Documents/PacketLens/connection_model.h
  /home/kali/Documents/PacketLens/flow_manager.h
+ /home/kali/Documents/PacketLens/graph_node.h
  /home/kali/Documents/PacketLens/http_api.h
  /home/kali/Documents/PacketLens/main_window.h
  /home/kali/Documents/PacketLens/network_graph_widget.h
@@ -3112,6 +3118,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h
@@ -3136,6 +3143,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QDialog
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QDialogButtonBox
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QFrame
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHBoxLayout
@@ -3166,6 +3174,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qdialog.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qdialogbuttonbox.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h
@@ -3553,6 +3562,7 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QRandomGenerator
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QRect
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/QSet
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSize
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSizeF
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString
@@ -3785,6 +3795,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o
  /home/kali/Documents/PacketLens/build-current/packetlens_autogen/mocs_compilation.cpp
  /home/kali/Documents/PacketLens/connection_model.h
  /home/kali/Documents/PacketLens/flow_manager.h
+ /home/kali/Documents/PacketLens/graph_node.h
  /home/kali/Documents/PacketLens/http_api.h
  /home/kali/Documents/PacketLens/main_window.h
  /home/kali/Documents/PacketLens/network_graph_widget.h
@@ -4268,6 +4279,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qxptype_traits.h
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qyieldcpu.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qaction.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qbitmap.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qbrush.h
@@ -4282,6 +4294,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h
@@ -4300,6 +4313,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtguiglobal.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel
@@ -4307,6 +4321,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h

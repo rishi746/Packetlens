@@ -474,6 +474,14 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qmap.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
+ /usr/include/x86_64-linux-gnu/qt6/QtCore/qpoint.h \
+ /home/kali/Documents/PacketLens/build-current/packetlens_autogen/EWIEGA46WW/../../../graph_node.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h \
  /home/kali/Documents/PacketLens/build-current/packetlens_autogen/EWIEGA46WW/moc_side_panel.cpp \
  /home/kali/Documents/PacketLens/build-current/packetlens_autogen/EWIEGA46WW/../../../side_panel.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \

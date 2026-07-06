@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 import socket
 import time
 import urllib.request
@@ -45,7 +46,47 @@ def state_name(state_hex, proto):
     return "NEW"
 
 
-def read_table(path, proto, ipv6, host):
+def read_process_name(pid):
+    for name in ("comm", "cmdline"):
+        try:
+            with open(f"/proc/{pid}/{name}", "rb") as f:
+                raw = f.read(256)
+        except OSError:
+            continue
+        if not raw:
+            continue
+        value = raw.split(b"\0", 1)[0].decode("utf-8", errors="replace").strip()
+        if value:
+            return os.path.basename(value)
+    return ""
+
+
+def build_inode_process_map():
+    result = {}
+    for pid in filter(str.isdigit, os.listdir("/proc")):
+        fd_dir = f"/proc/{pid}/fd"
+        try:
+            fds = os.listdir(fd_dir)
+        except OSError:
+            continue
+
+        proc_name = ""
+        for fd in fds:
+            try:
+                target = os.readlink(os.path.join(fd_dir, fd))
+            except OSError:
+                continue
+            if not (target.startswith("socket:[") and target.endswith("]")):
+                continue
+            inode = target[8:-1]
+            if not proc_name:
+                proc_name = read_process_name(pid)
+            if proc_name:
+                result[inode] = proc_name
+    return result
+
+
+def read_table(path, proto, ipv6, host, inode_processes):
     flows = []
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -58,6 +99,7 @@ def read_table(path, proto, ipv6, host):
                 dst_ip, dst_port = split_endpoint(parts[2], ipv6)
                 if dst_ip in {"0.0.0.0", "::"} and dst_port == 0:
                     continue
+                inode = parts[9]
                 flows.append({
                     "host": host,
                     "src_ip": src_ip,
@@ -67,7 +109,7 @@ def read_table(path, proto, ipv6, host):
                     "protocol": proto,
                     "packets": 1,
                     "bytes": 0,
-                    "process": "",
+                    "process": inode_processes.get(inode, ""),
                     "state": state_name(parts[3], proto),
                 })
     except FileNotFoundError:
@@ -77,8 +119,9 @@ def read_table(path, proto, ipv6, host):
 
 def collect(host):
     flows = []
+    inode_processes = build_inode_process_map()
     for path, proto, ipv6 in PROTO_TABLES:
-        flows.extend(read_table(path, proto, ipv6, host))
+        flows.extend(read_table(path, proto, ipv6, host, inode_processes))
     return flows
 
 

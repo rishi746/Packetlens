@@ -342,6 +342,7 @@ packetlens_autogen/timestamp: /home/kali/Documents/PacketLens/CMakeLists.txt \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QAbstractTableModel \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QMap \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QStringList \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
@@ -480,6 +481,7 @@ packetlens_autogen/timestamp: /home/kali/Documents/PacketLens/CMakeLists.txt \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qxptype_traits.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qyieldcpu.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qaction.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qbitmap.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qbrush.h \
@@ -494,6 +496,7 @@ packetlens_autogen/timestamp: /home/kali/Documents/PacketLens/CMakeLists.txt \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h \
@@ -510,6 +513,7 @@ packetlens_autogen/timestamp: /home/kali/Documents/PacketLens/CMakeLists.txt \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtguiglobal.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
@@ -517,6 +521,7 @@ packetlens_autogen/timestamp: /home/kali/Documents/PacketLens/CMakeLists.txt \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
@@ -2600,6 +2605,7 @@ CMakeFiles/packetlens.dir/main.cpp.o: /home/kali/Documents/PacketLens/main.cpp \
 CMakeFiles/packetlens.dir/main_window.cpp.o: /home/kali/Documents/PacketLens/main_window.cpp \
   /home/kali/Documents/PacketLens/connection_model.h \
   /home/kali/Documents/PacketLens/flow_manager.h \
+  /home/kali/Documents/PacketLens/graph_node.h \
   /home/kali/Documents/PacketLens/http_api.h \
   /home/kali/Documents/PacketLens/main_window.h \
   /home/kali/Documents/PacketLens/network_graph_widget.h \
@@ -3106,6 +3112,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o: /home/kali/Documents/PacketLens/mai
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h \
@@ -3130,6 +3137,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o: /home/kali/Documents/PacketLens/mai
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QDialog \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QDialogButtonBox \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QFrame \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHBoxLayout \
@@ -3160,6 +3168,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o: /home/kali/Documents/PacketLens/mai
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qdialog.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qdialogbuttonbox.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h \
@@ -3546,6 +3555,7 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: /home/kali/Documents/Packe
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QRandomGenerator \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QRect \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSet \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QSize \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QSizeF \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
@@ -3777,6 +3787,7 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: /home/kali/Documents/Packe
 CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_autogen/mocs_compilation.cpp \
   /home/kali/Documents/PacketLens/connection_model.h \
   /home/kali/Documents/PacketLens/flow_manager.h \
+  /home/kali/Documents/PacketLens/graph_node.h \
   /home/kali/Documents/PacketLens/http_api.h \
   /home/kali/Documents/PacketLens/main_window.h \
   /home/kali/Documents/PacketLens/network_graph_widget.h \
@@ -4260,6 +4271,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qxptype_traits.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qyieldcpu.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qaction.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qbitmap.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qbrush.h \
@@ -4274,6 +4286,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qkeysequence.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpaintdevice.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h \
@@ -4292,6 +4305,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtguiglobal.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
@@ -4299,6 +4313,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
@@ -6169,8 +6184,6 @@ CMakeFiles/packetlens.dir/connection_model.cpp.o:
 
 /usr/include/pcap/pcap.h:
 
-/usr/include/pcap/funcattrs.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.so:
 
 /usr/include/pcap/compiler-tests.h:
@@ -6315,8 +6328,6 @@ packetlens_autogen/EWIEGA46WW/moc_connection_model.cpp:
 
 /usr/include/linux/close_range.h:
 
-/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h:
-
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStyleOptionGraphicsItem:
 
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsSceneMouseEvent:
@@ -6343,8 +6354,6 @@ packetlens_autogen/EWIEGA46WW/moc_connection_model.cpp:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/QFont:
 
-/usr/include/x86_64-linux-gnu/qt6/QtGui/QColor:
-
 /usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
@@ -6370,12 +6379,6 @@ packetlens_autogen/EWIEGA46WW/moc_connection_model.cpp:
 /usr/include/c++/15/bits/monostate.h:
 
 /usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake:
-
-/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlistview.h:
-
-/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem:
-
-/usr/share/cmake-4.2/Modules/Platform/Linux-Determine-CXX.cmake:
 
 /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU-CXX.cmake:
 
@@ -6478,6 +6481,8 @@ CMakeFiles/packetlens.dir/tcp_parser.cpp.o:
 /usr/share/cmake-4.2/Modules/CMakeParseImplicitIncludeInfo.cmake:
 
 CMakeFiles/packetlens.dir/side_panel.cpp.o:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QSet:
 
 /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake:
 
@@ -6705,6 +6710,16 @@ packetlens_autogen/mocs_compilation.cpp:
 
 /usr/lib/x86_64-linux-gnu/cmake/Qt6/3rdparty/kwin/FindXKB.cmake:
 
+/usr/lib/linux/uapi/x86/asm/sockios.h:
+
+/usr/lib/linux/uapi/x86/asm/socket.h:
+
+/usr/include/pcap/dlt.h:
+
+/usr/lib/linux/uapi/x86/asm/posix_types_64.h:
+
+/usr/lib/linux/uapi/x86/asm/posix_types.h:
+
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -6758,6 +6773,10 @@ packetlens_autogen/mocs_compilation.cpp:
 /usr/include/errno.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qcontiguouscache.h:
+
+/usr/lib/linux/uapi/x86/asm/errno.h:
+
+/usr/include/c++/15/unordered_map:
 
 /usr/include/c++/15/chrono:
 
@@ -6980,8 +6999,6 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 /usr/include/c++/15/unordered_set:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qbytearraylist.h:
-
-/usr/lib/linux/uapi/x86/asm/sockios.h:
 
 /usr/include/c++/15/cwctype:
 
@@ -7321,10 +7338,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
-/usr/include/pcap/dlt.h:
-
-/usr/lib/linux/uapi/x86/asm/posix_types_64.h:
-
 packetlens_autogen/moc_predefs.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qatomic_cxx11.h:
@@ -7585,10 +7598,6 @@ packetlens_autogen/EWIEGA46WW/moc_network_graph_widget.cpp:
 
 /usr/include/stdio.h:
 
-/usr/include/c++/15/unordered_map:
-
-/usr/lib/linux/uapi/x86/asm/errno.h:
-
 /usr/include/assert.h:
 
 /usr/include/c++/15/bits/ostream.tcc:
@@ -7701,14 +7710,6 @@ packetlens_autogen/EWIEGA46WW/moc_network_graph_widget.cpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
-/usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h:
-
-/usr/include/x86_64-linux-gnu/qt6/QtCore/q17memory.h:
-
-/usr/include/x86_64-linux-gnu/qt6/QtCore/qline.h:
-
-/usr/include/x86_64-linux-gnu/qt6/QtGui/qregion.h:
-
 /usr/include/c++/15/condition_variable:
 
 /usr/include/linux/falloc.h:
@@ -7791,6 +7792,8 @@ packetlens_autogen/EWIEGA46WW/moc_network_graph_widget.cpp:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qiterator.h:
 
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h:
+
 /usr/include/c++/15/cstdio:
 
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
@@ -7850,6 +7853,10 @@ packetlens_autogen/EWIEGA46WW/moc_network_graph_widget.cpp:
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject:
+
+/usr/include/pcap/funcattrs.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint:
 
 /usr/lib/x86_64-linux-gnu/cmake/Qt6/QtPublicTargetHelpers.cmake:
 
@@ -7958,6 +7965,14 @@ packetlens_autogen/EWIEGA46WW/moc_main_window.cpp:
 /usr/include/asm-generic/errno.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qiodevice.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/q17memory.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/qline.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qregion.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h:
 
 /usr/lib/x86_64-linux-gnu/cmake/Qt6CorePrivate/Qt6CorePrivateConfigVersion.cmake:
 
@@ -8109,6 +8124,8 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h:
 
+/usr/include/x86_64-linux-gnu/qt6/QtGui/QColor:
+
 /usr/include/x86_64-linux-gnu/qt6/QtCore/q20algorithm.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h:
@@ -8128,6 +8145,12 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o:
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QPushButton:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qpixelformat.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlistview.h:
+
+/usr/share/cmake-4.2/Modules/Platform/Linux-Determine-CXX.cmake:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsItem:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qpolygon.h:
 
@@ -8166,7 +8189,3 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/local_lim.h:
 
 /usr/lib/linux/uapi/x86/asm/bitsperlong.h:
-
-/usr/lib/linux/uapi/x86/asm/posix_types.h:
-
-/usr/lib/linux/uapi/x86/asm/socket.h:

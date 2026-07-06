@@ -19,13 +19,15 @@
 #include <QMap>
 #include <QTimer>
 #include <QString>
+#include <QPoint>
 #include <cstdint>
 #include "flow_manager.h"
+#include "graph_node.h"
 
-class GraphNode;
 class QGraphicsLineItem;
 
 struct GraphEdge {
+    GraphNode*         source = nullptr;
     GraphNode*         remote = nullptr;
     QGraphicsLineItem* line   = nullptr;
 };
@@ -51,16 +53,22 @@ private slots:
     void physicsStep();
 
 private:
-    GraphNode* spawnNode(const QString& ip);
+    GraphNode* spawnNode(GraphNode::NodeType type, const QString& label, const QPointF& pos);
     void       syncEdge(GraphEdge& edge);
-    QPointF    randomOrbitPos() const;
+    QPointF    randomOrbitPos(const QPointF& center) const;
+    QPointF    hostOrbitPos(int index, int count) const;
     void       fitToActiveGraph();
+    QString    hostLabel(const FlowSnapshot& flow) const;
 
     QGraphicsScene* scene_  = nullptr;
     GraphNode*      master_ = nullptr;
+    QMap<QString, GraphNode*> hostNodes_;
     QMap<QString, GraphEdge> edges_;
+    QMap<QString, QGraphicsLineItem*> hostLinks_;
     QTimer* physTimer_ = nullptr;
     int autoFitTicksRemaining_ = 0;
+    double zoomFactor_ = 1.0;
+    bool userControlledView_ = false;
 
     // Scene logical bounds
     static constexpr qreal W = 980.0;
@@ -74,6 +82,8 @@ private:
     static constexpr double DAMP = 0.72;   // velocity damping per tick
     static constexpr double MAX_F = 14.0;  // force clamp (pixels/tick²)
     static constexpr int AUTO_FIT_TICKS_ON_NEW_NODE = 8;
+    static constexpr double MIN_ZOOM = 0.25;
+    static constexpr double MAX_ZOOM = 4.0;
 };
 
 #endif // NETWORK_GRAPH_WIDGET_H

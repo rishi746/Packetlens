@@ -11,10 +11,13 @@
 #include <QTimer>
 #include <QPen>
 #include <QColor>
+#include <QScrollBar>
 #include <QRandomGenerator>
 #include <QApplication>
 #include <QVector>
+#include <QSet>
 #include <QtMath>
+#include <algorithm>
 #include <cmath>
 
 // ── Constructor ───────────────────────────────────────────────────────────────
@@ -34,6 +37,8 @@ NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
     setFrameShape(QFrame::NoFrame);
     setOptimizationFlag(DontAdjustForAntialiasing, false);
     setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     // Subtle range rings help depth without overpowering the graph.
     QPen ringPen(QColor(120, 150, 190, 16), 0.8, Qt::SolidLine);
@@ -46,11 +51,6 @@ NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
     scene_->addLine(-W/2, 0, W/2, 0, crossPen)->setZValue(-10);
     scene_->addLine(0, -H/2, 0, H/2, crossPen)->setZValue(-10);
 
-    // ── Master node ───────────────────────────────────────────────────────────
-    master_ = new GraphNode(GraphNode::Master);
-    master_->setPos(0, 0);
-    scene_->addItem(master_);
-
     // ── Physics at 25 fps ─────────────────────────────────────────────────────
     physTimer_ = new QTimer(this);
     connect(physTimer_, &QTimer::timeout, this, &NetworkGraphWidget::physicsStep);
@@ -59,61 +59,136 @@ NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
 
 // ── Snapshot update ───────────────────────────────────────────────────────────
 void NetworkGraphWidget::updateFromSnapshot(const std::vector<FlowSnapshot>& snap) {
-    // Aggregate by dst_ip — keep dominant port (highest bytes)
+    // Aggregate by reporting host + destination IP + destination port.
     struct AggRow {
-        uint64_t packets = 0, bytes = 0, portBytes = 0;
-        QString  process, state;
+        uint64_t packets = 0, bytes = 0, bestScore = 0;
+        QString  host, dstIp, process, state;
         uint16_t port = 0;
     };
 
     QMap<QString, AggRow> agg;
+    QSet<QString> activeHosts;
     for (const auto& s : snap) {
+        QString host = hostLabel(s);
         QString dip = QString::fromStdString(s.dst_ip);
-        auto& a     = agg[dip];
+        QString key = QString("%1|%2|%3").arg(host, dip).arg(s.dst_port);
+
+        activeHosts.insert(host);
+
+        auto& a     = agg[key];
+        a.host      = host;
+        a.dstIp     = dip;
         a.packets  += s.packets;
         a.bytes    += s.bytes;
-        if (s.bytes > a.portBytes) {
-            a.portBytes = s.bytes;
+        uint64_t score = s.bytes > 0 ? s.bytes : s.packets;
+        if (score >= a.bestScore) {
+            a.bestScore = score;
             a.port      = s.dst_port;
             a.process   = QString::fromStdString(s.process);
             a.state     = QString::fromStdString(s.state);
         }
     }
 
-    // Add new nodes / update existing
-    for (auto it = agg.begin(); it != agg.end(); ++it) {
-        const QString& dip = it.key();
-        const AggRow&  row = it.value();
-
-        if (!edges_.contains(dip)) {
-            GraphNode* node = spawnNode(dip);
-            QGraphicsLineItem* line = scene_->addLine(0, 0, node->pos().x(), node->pos().y());
-            line->setZValue(1);
-            edges_[dip] = { node, line };
+    int hostIndex = 0;
+    int hostCount = std::max(1, static_cast<int>(activeHosts.size()));
+    for (const QString& host : activeHosts) {
+        if (!hostNodes_.contains(host)) {
+            QPointF pos = hostCount == 1 ? QPointF(0, 0) : hostOrbitPos(hostIndex, hostCount);
+            GraphNode* node = spawnNode(GraphNode::Master, host, pos);
+            hostNodes_[host] = node;
+            if (!master_) master_ = node;
             autoFitTicksRemaining_ = AUTO_FIT_TICKS_ON_NEW_NODE;
         }
 
-        GraphEdge& edge = edges_[dip];
+        QPointF target = hostCount == 1 ? QPointF(0, 0) : hostOrbitPos(hostIndex, hostCount);
+        hostNodes_[host]->setPos(target);
+        ++hostIndex;
+    }
+
+    for (auto it = hostNodes_.begin(); it != hostNodes_.end(); ) {
+        if (!activeHosts.contains(it.key())) {
+            GraphNode* node = it.value();
+            scene_->removeItem(node);
+            delete node;
+            it = hostNodes_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    master_ = hostNodes_.isEmpty() ? nullptr : hostNodes_.begin().value();
+
+    QSet<QString> desiredHostLinks;
+    if (activeHosts.size() > 1 && hostNodes_.contains("local")) {
+        GraphNode* local = hostNodes_["local"];
+        for (const QString& host : activeHosts) {
+            if (host == "local") continue;
+            QString linkKey = QString("local|%1").arg(host);
+            desiredHostLinks.insert(linkKey);
+            if (!hostLinks_.contains(linkKey)) {
+                auto* line = scene_->addLine(0, 0, 0, 0);
+                line->setZValue(0);
+                hostLinks_[linkKey] = line;
+            }
+            GraphNode* other = hostNodes_.value(host, nullptr);
+            if (other) {
+                QLineF link(local->pos(), other->pos());
+                hostLinks_[linkKey]->setLine(link);
+                hostLinks_[linkKey]->setPen(QPen(QColor(126, 184, 247, 120), 1.4,
+                                                 Qt::DashLine, Qt::RoundCap));
+            }
+        }
+    }
+
+    for (auto it = hostLinks_.begin(); it != hostLinks_.end(); ) {
+        if (!desiredHostLinks.contains(it.key())) {
+            scene_->removeItem(it.value());
+            delete it.value();
+            it = hostLinks_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // Add new destination nodes / update existing.
+    for (auto it = agg.begin(); it != agg.end(); ++it) {
+        const QString& edgeKey = it.key();
+        const AggRow&  row = it.value();
+        GraphNode* source = hostNodes_.value(row.host, nullptr);
+        if (!source) continue;
+
+        if (!edges_.contains(edgeKey)) {
+            GraphNode* node = spawnNode(GraphNode::Remote, row.dstIp, randomOrbitPos(source->pos()));
+            QGraphicsLineItem* line = scene_->addLine(source->pos().x(), source->pos().y(),
+                                                      node->pos().x(), node->pos().y());
+            line->setZValue(1);
+            edges_[edgeKey] = { source, node, line };
+            autoFitTicksRemaining_ = AUTO_FIT_TICKS_ON_NEW_NODE;
+        }
+
+        GraphEdge& edge = edges_[edgeKey];
+        edge.source = source;
         edge.remote->setFlowData(row.packets, row.bytes, row.process, row.port, row.state);
         syncEdge(edge);
     }
 
-    // Mark flows that vanished as CLOSED
-    for (auto it = edges_.begin(); it != edges_.end(); ++it) {
+    // Remove destination nodes that are no longer visible in the current host filter.
+    for (auto it = edges_.begin(); it != edges_.end(); ) {
         if (!agg.contains(it.key())) {
-            GraphEdge& edge = it.value();
-            edge.remote->setFlowData(
-                edge.remote->packets(), edge.remote->bytes(),
-                edge.remote->process(), edge.remote->dstPort(), "CLOSED");
-            syncEdge(edge);
+            scene_->removeItem(it.value().line);
+            scene_->removeItem(it.value().remote);
+            delete it.value().line;
+            delete it.value().remote;
+            it = edges_.erase(it);
+        } else {
+            ++it;
         }
     }
 }
 
 // ── Spawn ─────────────────────────────────────────────────────────────────────
-GraphNode* NetworkGraphWidget::spawnNode(const QString& ip) {
-    auto* node = new GraphNode(GraphNode::Remote, ip);
-    node->setPos(randomOrbitPos());
+GraphNode* NetworkGraphWidget::spawnNode(GraphNode::NodeType type, const QString& label, const QPointF& pos) {
+    auto* node = new GraphNode(type, label);
+    node->setPos(pos);
     // Give it a small random kick so nodes immediately start separating
     node->vel_ = QPointF(
         (QRandomGenerator::global()->bounded(20) - 10),
@@ -122,10 +197,17 @@ GraphNode* NetworkGraphWidget::spawnNode(const QString& ip) {
     return node;
 }
 
-QPointF NetworkGraphWidget::randomOrbitPos() const {
+QPointF NetworkGraphWidget::randomOrbitPos(const QPointF& center) const {
     auto* rng  = QRandomGenerator::global();
     double ang = rng->bounded(360) * M_PI / 180.0;
-    double r   = 135.0 + rng->bounded(90);
+    double r   = 120.0 + rng->bounded(80);
+    return center + QPointF(r * std::cos(ang), r * std::sin(ang));
+}
+
+QPointF NetworkGraphWidget::hostOrbitPos(int index, int count) const {
+    if (count <= 1) return QPointF(0, 0);
+    double ang = (2.0 * M_PI * index / count) - (M_PI / 2.0);
+    double r = 230.0;
     return QPointF(r * std::cos(ang), r * std::sin(ang));
 }
 
@@ -133,8 +215,9 @@ QPointF NetworkGraphWidget::randomOrbitPos() const {
 void NetworkGraphWidget::syncEdge(GraphEdge& edge) {
     if (!edge.remote || !edge.line) return;
 
+    QPointF sp = edge.source ? edge.source->pos() : QPointF(0, 0);
     QPointF rp = edge.remote->pos();
-    edge.line->setLine(0, 0, rp.x(), rp.y());
+    edge.line->setLine(sp.x(), sp.y(), rp.x(), rp.y());
 
     QColor col = edge.remote->edgeColor();
     float  w   = edge.remote->edgeWidth();
@@ -167,16 +250,21 @@ void NetworkGraphWidget::physicsStep() {
         if (n) nodes.append(n);
     }
 
-    const QPointF origin(0, 0);
-
     for (GraphNode* n : nodes) {
         if (n->pinned_) continue;
 
         QPointF pos  = n->pos();
         QPointF force(0, 0);
+        QPointF anchor(0, 0);
+        for (auto it = edges_.begin(); it != edges_.end(); ++it) {
+            if (it.value().remote == n && it.value().source) {
+                anchor = it.value().source->pos();
+                break;
+            }
+        }
 
         // ── Repulsion: every node repels every other node ─────────────────────
-        // Including master (origin)
+        // Including host anchors.
         auto applyRepulsion = [&](QPointF other) {
             QPointF d    = pos - other;
             double dist2 = d.x()*d.x() + d.y()*d.y();
@@ -186,15 +274,17 @@ void NetworkGraphWidget::physicsStep() {
             force += QPointF(d.x()/dist * f, d.y()/dist * f);
         };
 
-        applyRepulsion(origin);  // repel from master
+        for (auto it = hostNodes_.begin(); it != hostNodes_.end(); ++it) {
+            applyRepulsion(it.value()->pos());
+        }
         for (GraphNode* other : nodes) {
             if (other == n) continue;
             applyRepulsion(other->pos());
         }
 
-        // ── Spring: attraction toward master ──────────────────────────────────
+        // ── Spring: attraction toward the reporting host ──────────────────────
         {
-            QPointF d    = origin - pos;
+            QPointF d    = anchor - pos;
             double  dist = std::sqrt(d.x()*d.x() + d.y()*d.y());
             if (dist > 0.5) {
                 double stretch = dist - L0;           // positive → too far
@@ -224,9 +314,16 @@ void NetworkGraphWidget::physicsStep() {
     for (auto it = edges_.begin(); it != edges_.end(); ++it) {
         syncEdge(it.value());
     }
+    for (auto it = hostLinks_.begin(); it != hostLinks_.end(); ++it) {
+        const QStringList parts = it.key().split('|');
+        if (parts.size() != 2) continue;
+        GraphNode* a = hostNodes_.value(parts[0], nullptr);
+        GraphNode* b = hostNodes_.value(parts[1], nullptr);
+        if (a && b) it.value()->setLine(QLineF(a->pos(), b->pos()));
+    }
 
     if (autoFitTicksRemaining_ > 0) {
-        fitToActiveGraph();
+        if (!userControlledView_) fitToActiveGraph();
         --autoFitTicksRemaining_;
     }
 }
@@ -238,8 +335,12 @@ void NetworkGraphWidget::fitToActiveGraph() {
             bounds = bounds.united(it.value().remote->sceneBoundingRect());
         }
     }
+    for (auto it = hostNodes_.begin(); it != hostNodes_.end(); ++it) {
+        bounds = bounds.united(it.value()->sceneBoundingRect());
+    }
     bounds = bounds.adjusted(-90, -90, 90, 90);
     fitInView(bounds, Qt::KeepAspectRatio);
+    zoomFactor_ = 1.0;
 }
 
 // ── Mouse: click on node → emit signal + forward to item for pinning ──────────
@@ -259,9 +360,22 @@ void NetworkGraphWidget::mousePressEvent(QMouseEvent* event) {
 }
 
 void NetworkGraphWidget::wheelEvent(QWheelEvent* event) {
-    if (event->modifiers() & Qt::ControlModifier) {
-        double f = event->angleDelta().y() > 0 ? 1.13 : (1.0/1.13);
-        scale(f, f);
+    if (event->modifiers() & Qt::ShiftModifier) {
+        horizontalScrollBar()->setValue(
+            horizontalScrollBar()->value() - event->angleDelta().y());
+        event->accept();
+        return;
+    }
+
+    if (event->angleDelta().y() != 0) {
+        double f = event->angleDelta().y() > 0 ? 1.12 : (1.0 / 1.12);
+        double nextZoom = std::clamp(zoomFactor_ * f, MIN_ZOOM, MAX_ZOOM);
+        f = nextZoom / zoomFactor_;
+        if (std::abs(f - 1.0) > 0.001) {
+            zoomFactor_ = nextZoom;
+            userControlledView_ = true;
+            scale(f, f);
+        }
         event->accept();
     } else {
         QGraphicsView::wheelEvent(event);
@@ -271,4 +385,8 @@ void NetworkGraphWidget::wheelEvent(QWheelEvent* event) {
 void NetworkGraphWidget::resizeEvent(QResizeEvent* e) {
     QGraphicsView::resizeEvent(e);
     autoFitTicksRemaining_ = std::max(autoFitTicksRemaining_, 1);
+}
+
+QString NetworkGraphWidget::hostLabel(const FlowSnapshot& flow) const {
+    return QString::fromStdString(flow.host.empty() ? "local" : flow.host);
 }

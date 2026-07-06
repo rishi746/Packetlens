@@ -143,7 +143,7 @@ void GraphNode::paint(QPainter* p,
 
     QString lbl;
     if (type_ == Master) {
-        lbl = "LOCAL";
+        lbl = ip_.isEmpty() ? "local" : truncate(ip_, 10);
     } else {
         lbl = dstPort_ == 0 ? "IP" : QString::number(dstPort_);
     }
@@ -242,7 +242,9 @@ void GraphNode::drawInfoCard(QPainter* p) const {
     // Port category badge (top right of header)
     PortRule rule = PortConfig::instance().classify(dstPort_);
     QColor catCol = PortConfig::colorFor(rule.category);
-    QString portLabel = rule.label.isEmpty() || rule.label == "Unknown"
+    QString portLabel = dstPort_ == 0
+        ? QString("IP")
+        : rule.label.isEmpty() || rule.label == "Unknown"
         ? QString(":%1").arg(dstPort_)
         : rule.label;
     QFont badgeFont("Courier New", 7);
@@ -267,10 +269,19 @@ void GraphNode::drawInfoCard(QPainter* p) const {
     if (state_ == "CLOSED") stateCol = QColor(0xff, 0x3a, 0x3a);
     if (state_ == "NEW")    stateCol = QColor(0xff, 0xb0, 0x3a);
 
+    QString trafficText = bytes_ == 0
+        ? QString("%1 pkts").arg(packets_)
+        : QString("%1 / %2 pkts").arg(fmtBytes(bytes_)).arg(packets_);
+    QString portText = dstPort_ == 0
+        ? QString("IP traffic")
+        : (rule.label == "Unknown"
+            ? QString("%1").arg(dstPort_)
+            : QString("%1 (%2)").arg(dstPort_).arg(rule.label));
+
     QVector<Row> rows = {
         { "Proc",  truncate(process_.isEmpty() ? "unknown" : process_, 22), QColor(0xc8, 0xde, 0xff) },
-        { "Traffic", QString("%1 / %2 pkts").arg(fmtBytes(bytes_)).arg(packets_), QColor(0xff, 0xd0, 0x60) },
-        { "Port",  rule.label == "Unknown" ? QString("%1").arg(dstPort_) : QString("%1 (%2)").arg(dstPort_).arg(rule.label), catCol },
+        { "Traffic", trafficText, QColor(0xff, 0xd0, 0x60) },
+        { "Port",  portText, catCol },
         { "State", state_, stateCol },
     };
 
