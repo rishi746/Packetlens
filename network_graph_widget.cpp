@@ -20,6 +20,42 @@
 #include <algorithm>
 #include <cmath>
 
+namespace {
+bool isKnownPort(uint16_t port) {
+    return PortConfig::instance().classify(port).category != PortCategory::Unknown;
+}
+
+bool isEphemeralPort(uint16_t port) {
+    return port >= 49152;
+}
+
+struct ServiceEndpoint {
+    QString ip;
+    uint16_t port = 0;
+};
+
+ServiceEndpoint chooseServiceEndpoint(const FlowSnapshot& flow) {
+    QString srcIp = QString::fromStdString(flow.src_ip);
+    QString dstIp = QString::fromStdString(flow.dst_ip);
+
+    bool srcKnown = isKnownPort(flow.src_port);
+    bool dstKnown = isKnownPort(flow.dst_port);
+
+    if (dstKnown && !srcKnown) return { dstIp, flow.dst_port };
+    if (srcKnown && !dstKnown) return { srcIp, flow.src_port };
+
+    if (isEphemeralPort(flow.dst_port) && !isEphemeralPort(flow.src_port)) {
+        return { srcIp, flow.src_port };
+    }
+    if (isEphemeralPort(flow.src_port) && !isEphemeralPort(flow.dst_port)) {
+        return { dstIp, flow.dst_port };
+    }
+
+    if (flow.dst_port != 0) return { dstIp, flow.dst_port };
+    return { dstIp.isEmpty() ? srcIp : dstIp, flow.src_port };
+}
+}
+
 // ── Constructor ───────────────────────────────────────────────────────────────
 NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
     : QGraphicsView(parent)
@@ -39,6 +75,7 @@ NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
     setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    setCursor(Qt::OpenHandCursor);
 
     // Subtle range rings help depth without overpowering the graph.
     QPen ringPen(QColor(120, 150, 190, 16), 0.8, Qt::SolidLine);
@@ -70,22 +107,24 @@ void NetworkGraphWidget::updateFromSnapshot(const std::vector<FlowSnapshot>& sna
     QSet<QString> activeHosts;
     for (const auto& s : snap) {
         QString host = hostLabel(s);
-        QString dip = QString::fromStdString(s.dst_ip);
-        QString key = QString("%1|%2|%3").arg(host, dip).arg(s.dst_port);
+        ServiceEndpoint endpoint = chooseServiceEndpoint(s);
+        QString key = QString("%1|%2|%3").arg(host, endpoint.ip).arg(endpoint.port);
 
         activeHosts.insert(host);
 
         auto& a     = agg[key];
         a.host      = host;
-        a.dstIp     = dip;
+        a.dstIp     = endpoint.ip;
         a.packets  += s.packets;
         a.bytes    += s.bytes;
         uint64_t score = s.bytes > 0 ? s.bytes : s.packets;
         if (score >= a.bestScore) {
             a.bestScore = score;
-            a.port      = s.dst_port;
-            a.process   = QString::fromStdString(s.process);
+            a.port      = endpoint.port;
             a.state     = QString::fromStdString(s.state);
+        }
+        if (!s.process.empty()) {
+            a.process = QString::fromStdString(s.process);
         }
     }
 
@@ -183,6 +222,8 @@ void NetworkGraphWidget::updateFromSnapshot(const std::vector<FlowSnapshot>& sna
             ++it;
         }
     }
+
+    updateSceneBounds();
 }
 
 // ── Spawn ─────────────────────────────────────────────────────────────────────
@@ -322,13 +363,15 @@ void NetworkGraphWidget::physicsStep() {
         if (a && b) it.value()->setLine(QLineF(a->pos(), b->pos()));
     }
 
+    updateSceneBounds();
+
     if (autoFitTicksRemaining_ > 0) {
         if (!userControlledView_) fitToActiveGraph();
         --autoFitTicksRemaining_;
     }
 }
 
-void NetworkGraphWidget::fitToActiveGraph() {
+QRectF NetworkGraphWidget::activeGraphBounds() const {
     QRectF bounds(-80, -80, 160, 160);
     for (auto it = edges_.begin(); it != edges_.end(); ++it) {
         if (it.value().remote) {
@@ -338,7 +381,17 @@ void NetworkGraphWidget::fitToActiveGraph() {
     for (auto it = hostNodes_.begin(); it != hostNodes_.end(); ++it) {
         bounds = bounds.united(it.value()->sceneBoundingRect());
     }
-    bounds = bounds.adjusted(-90, -90, 90, 90);
+    return bounds.adjusted(-220, -220, 220, 220);
+}
+
+void NetworkGraphWidget::updateSceneBounds() {
+    QRectF bounds = activeGraphBounds();
+    bounds = bounds.united(QRectF(-W / 2, -H / 2, W, H));
+    scene_->setSceneRect(bounds);
+}
+
+void NetworkGraphWidget::fitToActiveGraph() {
+    QRectF bounds = activeGraphBounds();
     fitInView(bounds, Qt::KeepAspectRatio);
     zoomFactor_ = 1.0;
 }
@@ -348,15 +401,45 @@ void NetworkGraphWidget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         QPointF sp   = mapToScene(event->pos());
         auto*   item = scene_->itemAt(sp, transform());
-        if (auto* node = dynamic_cast<GraphNode*>(item)) {
-            if (!node->isMaster()) {
-                emit nodeSelected(
-                    node->ip(), node->bytes(), node->packets(),
-                    node->process(), node->dstPort(), node->state());
-            }
-        }
+        pressedNode_ = dynamic_cast<GraphNode*>(item);
+        panning_ = true;
+        userControlledView_ = true;
+        panPressPos_ = event->pos();
+        panLastPos_ = event->pos();
+        setCursor(Qt::ClosedHandCursor);
+        event->accept();
+        return;
     }
     QGraphicsView::mousePressEvent(event);
+}
+
+void NetworkGraphWidget::mouseMoveEvent(QMouseEvent* event) {
+    if (panning_) {
+        QPoint delta = event->pos() - panLastPos_;
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - delta.x());
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - delta.y());
+        panLastPos_ = event->pos();
+        event->accept();
+        return;
+    }
+    QGraphicsView::mouseMoveEvent(event);
+}
+
+void NetworkGraphWidget::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton && panning_) {
+        bool wasClick = (event->pos() - panPressPos_).manhattanLength() < 5;
+        if (wasClick && pressedNode_ && !pressedNode_->isMaster()) {
+            emit nodeSelected(
+                pressedNode_->ip(), pressedNode_->bytes(), pressedNode_->packets(),
+                pressedNode_->process(), pressedNode_->dstPort(), pressedNode_->state());
+        }
+        pressedNode_ = nullptr;
+        panning_ = false;
+        setCursor(Qt::OpenHandCursor);
+        event->accept();
+        return;
+    }
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
 void NetworkGraphWidget::wheelEvent(QWheelEvent* event) {

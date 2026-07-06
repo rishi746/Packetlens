@@ -46,6 +46,8 @@ signals:
 
 protected:
     void mousePressEvent(QMouseEvent*)  override;
+    void mouseMoveEvent(QMouseEvent*)   override;
+    void mouseReleaseEvent(QMouseEvent*) override;
     void wheelEvent(QWheelEvent*)       override;
     void resizeEvent(QResizeEvent*)     override;
 
@@ -57,6 +59,8 @@ private:
     void       syncEdge(GraphEdge& edge);
     QPointF    randomOrbitPos(const QPointF& center) const;
     QPointF    hostOrbitPos(int index, int count) const;
+    QRectF     activeGraphBounds() const;
+    void       updateSceneBounds();
     void       fitToActiveGraph();
     QString    hostLabel(const FlowSnapshot& flow) const;
 
@@ -69,6 +73,10 @@ private:
     int autoFitTicksRemaining_ = 0;
     double zoomFactor_ = 1.0;
     bool userControlledView_ = false;
+    bool panning_ = false;
+    QPoint panPressPos_;
+    QPoint panLastPos_;
+    GraphNode* pressedNode_ = nullptr;
 
     // Scene logical bounds
     static constexpr qreal W = 980.0;

@@ -28,8 +28,19 @@ void PortConfig::loadDefaults() {
         };
 
     // caution
-    for (uint16_t p : {53, 123, 67, 68, 137, 138, 139, 445, 3306, 5432, 27017})
-        rules_[p] = { p == 53 ? "DNS" : p == 3306 ? "MySQL" : p == 5432 ? "Postgres" : "System/DB", PortCategory::Caution };
+    for (uint16_t p : {53, 123, 67, 68, 137, 138, 139, 445, 1900, 3306, 5353, 5432, 8765, 27017})
+        rules_[p] = {
+            p == 53 ? "DNS" :
+            p == 67 ? "DHCP-Srv" :
+            p == 68 ? "DHCP-Cli" :
+            p == 1900 ? "SSDP" :
+            p == 3306 ? "MySQL" :
+            p == 5353 ? "mDNS" :
+            p == 5432 ? "Postgres" :
+            p == 8765 ? "PacketLens" :
+            "System/DB",
+            PortCategory::Caution
+        };
 }
 
 // ── File loader ───────────────────────────────────────────────────────────────

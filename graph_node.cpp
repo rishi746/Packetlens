@@ -51,7 +51,9 @@ void GraphNode::setFlowData(uint64_t packets, uint64_t bytes,
     bool changed = (bytes_ != bytes || dstPort_ != dstPort || state_ != state || process_ != process);
     packets_ = packets;
     bytes_   = bytes;
-    process_ = process;
+    if (!process.isEmpty() || process_.isEmpty()) {
+        process_ = process;
+    }
     dstPort_ = dstPort;
     state_   = state;
 

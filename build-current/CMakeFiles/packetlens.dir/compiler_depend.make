@@ -2943,6 +2943,7 @@ CMakeFiles/packetlens.dir/main_window.cpp.o: /home/kali/Documents/PacketLens/mai
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QAbstractTableModel \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QMap \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QSignalBlocker \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QSortFilterProxyModel \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
@@ -3553,6 +3554,7 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: /home/kali/Documents/Packe
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QList \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QMap \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QRandomGenerator \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QRect \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QSet \
@@ -3753,13 +3755,16 @@ CMakeFiles/packetlens.dir/network_graph_widget.cpp.o: /home/kali/Documents/Packe
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsLineItem \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsScene \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsView \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollBar \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractslider.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qapplication.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsscene.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicsview.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollbar.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsizepolicy.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgets-config.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgetsexports.h \
@@ -4129,6 +4134,7 @@ CMakeFiles/packetlens.dir/packetlens_autogen/mocs_compilation.cpp.o: packetlens_
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QAbstractTableModel \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QMap \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QStringList \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
@@ -6232,6 +6238,8 @@ packetlens_autogen/EWIEGA46WW/moc_side_panel.cpp:
 
 packetlens_autogen/EWIEGA46WW/moc_connection_model.cpp:
 
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollBar:
+
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsLineItem:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qvectornd.h:
@@ -6251,6 +6259,8 @@ packetlens_autogen/EWIEGA46WW/moc_connection_model.cpp:
 /usr/include/x86_64-linux-gnu/qt6/QtCore/QSizeF:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/QRandomGenerator:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollbar.h:
 
 /usr/include/x86_64-linux-gnu/c++/15/bits/opt_random.h:
 

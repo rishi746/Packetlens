@@ -91,12 +91,50 @@ void HttpApi::serverLoop() {
 
 // ── Handle one HTTP request ───────────────────────────────────────────────────
 void HttpApi::handleClient(int fd) {
-    // Read request. Remote agent ingest bodies are intentionally small.
-    char buf[65536] = {};
-    ssize_t n = ::recv(fd, buf, sizeof(buf) - 1, 0);
+    std::string req;
+    char buf[8192] = {};
+    ssize_t n = ::recv(fd, buf, sizeof(buf), 0);
     if (n <= 0) return;
+    req.append(buf, static_cast<size_t>(n));
 
-    std::string req(buf, static_cast<size_t>(n));
+    auto headerEnd = req.find("\r\n\r\n");
+    if (headerEnd != std::string::npos) {
+        auto headers = req.substr(0, headerEnd);
+        auto lowerHeaders = headers;
+        std::transform(lowerHeaders.begin(), lowerHeaders.end(), lowerHeaders.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+
+        size_t contentLength = 0;
+        auto clPos = lowerHeaders.find("content-length:");
+        if (clPos != std::string::npos) {
+            auto valueStart = clPos + std::string("content-length:").size();
+            while (valueStart < lowerHeaders.size() &&
+                   std::isspace(static_cast<unsigned char>(lowerHeaders[valueStart]))) {
+                ++valueStart;
+            }
+            auto valueEnd = valueStart;
+            while (valueEnd < lowerHeaders.size() &&
+                   std::isdigit(static_cast<unsigned char>(lowerHeaders[valueEnd]))) {
+                ++valueEnd;
+            }
+            if (valueEnd > valueStart) {
+                try {
+                    contentLength = std::stoull(lowerHeaders.substr(valueStart, valueEnd - valueStart));
+                } catch (...) {
+                    contentLength = 0;
+                }
+            }
+        }
+
+        constexpr size_t MAX_BODY = 2 * 1024 * 1024;
+        contentLength = std::min(contentLength, MAX_BODY);
+        size_t bodyStart = headerEnd + 4;
+        while (req.size() < bodyStart + contentLength) {
+            n = ::recv(fd, buf, sizeof(buf), 0);
+            if (n <= 0) break;
+            req.append(buf, static_cast<size_t>(n));
+        }
+    }
 
     // Parse method + path from first line
     std::istringstream ss(req);
