@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/kali/Documents/PacketLens/build-current/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

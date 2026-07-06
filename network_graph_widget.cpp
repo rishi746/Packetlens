@@ -33,6 +33,7 @@ NetworkGraphWidget::NetworkGraphWidget(QWidget* parent)
     setBackgroundBrush(QColor(8, 10, 18));
     setFrameShape(QFrame::NoFrame);
     setOptimizationFlag(DontAdjustForAntialiasing, false);
+    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
     // Subtle range rings help depth without overpowering the graph.
     QPen ringPen(QColor(120, 150, 190, 16), 0.8, Qt::SolidLine);
@@ -89,6 +90,7 @@ void NetworkGraphWidget::updateFromSnapshot(const std::vector<FlowSnapshot>& sna
             QGraphicsLineItem* line = scene_->addLine(0, 0, node->pos().x(), node->pos().y());
             line->setZValue(1);
             edges_[dip] = { node, line };
+            autoFitTicksRemaining_ = AUTO_FIT_TICKS_ON_NEW_NODE;
         }
 
         GraphEdge& edge = edges_[dip];
@@ -223,8 +225,10 @@ void NetworkGraphWidget::physicsStep() {
         syncEdge(it.value());
     }
 
-    fitToActiveGraph();
-    scene_->update();
+    if (autoFitTicksRemaining_ > 0) {
+        fitToActiveGraph();
+        --autoFitTicksRemaining_;
+    }
 }
 
 void NetworkGraphWidget::fitToActiveGraph() {
@@ -266,5 +270,5 @@ void NetworkGraphWidget::wheelEvent(QWheelEvent* event) {
 
 void NetworkGraphWidget::resizeEvent(QResizeEvent* e) {
     QGraphicsView::resizeEvent(e);
-    fitToActiveGraph();
+    autoFitTicksRemaining_ = std::max(autoFitTicksRemaining_, 1);
 }

@@ -1,0 +1,5 @@
+/home/kali/Documents/PacketLens/build-current/CMakeFiles/packetlens.dir
+/home/kali/Documents/PacketLens/build-current/CMakeFiles/edit_cache.dir
+/home/kali/Documents/PacketLens/build-current/CMakeFiles/rebuild_cache.dir
+/home/kali/Documents/PacketLens/build-current/CMakeFiles/packetlens_autogen_timestamp_deps.dir
+/home/kali/Documents/PacketLens/build-current/CMakeFiles/packetlens_autogen.dir

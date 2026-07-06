@@ -60,6 +60,7 @@ private:
     GraphNode*      master_ = nullptr;
     QMap<QString, GraphEdge> edges_;
     QTimer* physTimer_ = nullptr;
+    int autoFitTicksRemaining_ = 0;
 
     // Scene logical bounds
     static constexpr qreal W = 980.0;
@@ -72,6 +73,7 @@ private:
     static constexpr double Kc = 0.007;    // centering pull
     static constexpr double DAMP = 0.72;   // velocity damping per tick
     static constexpr double MAX_F = 14.0;  // force clamp (pixels/tick²)
+    static constexpr int AUTO_FIT_TICKS_ON_NEW_NODE = 8;
 };
 
 #endif // NETWORK_GRAPH_WIDGET_H

@@ -145,10 +145,7 @@ void GraphNode::paint(QPainter* p,
     if (type_ == Master) {
         lbl = "LOCAL";
     } else {
-        QStringList parts = ip_.split('.');
-        lbl = parts.size() == 4
-            ? parts[3]
-            : ip_;
+        lbl = dstPort_ == 0 ? "IP" : QString::number(dstPort_);
     }
 
     QFontMetricsF fm(labelFont);
