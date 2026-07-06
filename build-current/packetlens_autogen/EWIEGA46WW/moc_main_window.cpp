@@ -58,6 +58,9 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "packets",
         "port",
         "state",
+        "onHostSelected",
+        "host",
+        "flows",
         "onChooseInterfaces",
         "onHostFilterChanged"
     };
@@ -79,10 +82,15 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
             { QMetaType::QString, 13 }, { 0x80000000 | 14, 15 }, { 0x80000000 | 14, 16 }, { QMetaType::QString, 9 },
             { QMetaType::UShort, 17 }, { QMetaType::QString, 18 },
         }}),
+        // Slot 'onHostSelected'
+        QtMocHelpers::SlotData<void(QString, QString, uint64_t, uint64_t, uint64_t)>(19, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 20 }, { QMetaType::QString, 13 }, { 0x80000000 | 14, 15 }, { 0x80000000 | 14, 16 },
+            { 0x80000000 | 14, 21 },
+        }}),
         // Slot 'onChooseInterfaces'
-        QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onHostFilterChanged'
-        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -110,8 +118,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 1: _t->onNewConnection((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<quint16>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<quint16>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[6]))); break;
         case 2: _t->onError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 3: _t->onNodeSelected((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<quint16>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[6]))); break;
-        case 4: _t->onChooseInterfaces(); break;
-        case 5: _t->onHostFilterChanged(); break;
+        case 4: _t->onHostSelected((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[5]))); break;
+        case 5: _t->onChooseInterfaces(); break;
+        case 6: _t->onHostFilterChanged(); break;
         default: ;
         }
     }
@@ -136,14 +145,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

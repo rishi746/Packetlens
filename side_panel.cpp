@@ -119,8 +119,8 @@ void SidePanel::buildUi() {
     struct LegEntry { QString col; QString text; };
     for (auto [col, text] : QVector<LegEntry>{
             {"#3affb0", "Secure"},
-            {"#ff3a3a", "Cleartext"},
-            {"#ffb03a", "Infra / DB"},
+            {"#ff3a3a", "Insecure"},
+            {"#ffb03a", "Network Service"},
             {"#ffe033", "Unclassified"} })
     {
         auto* row = new QWidget;
@@ -173,6 +173,29 @@ void SidePanel::showNode(const QString& ip,
         QString("color:%1; font-size:12px;").arg(catCol.name()));
 
     processLbl_->setText(process.isEmpty() ? "(unknown)" : process);
+    bytesLbl_->setText(formatBytes(bytes));
+    packetsLbl_->setText(QLocale().toString(static_cast<qlonglong>(packets)));
+}
+
+void SidePanel::showHost(const QString& host,
+                         const QString& ip,
+                         uint64_t bytes, uint64_t packets,
+                         uint64_t flows)
+{
+    card_->setVisible(true);
+    placeholderLbl_->setVisible(false);
+
+    ipLbl_->setText(host);
+    stateLbl_->setText("HOST");
+    stateLbl_->setStyleSheet(
+        "background:#1e2a3a; color:#8fc5ff; border-radius:4px; "
+        "font-size:10px; padding:2px 6px;");
+
+    portLbl_->setText(ip.isEmpty() ? "—" : ip);
+    portCatLbl_->setText(QString("%1 flows").arg(
+        QLocale().toString(static_cast<qlonglong>(flows))));
+    portCatLbl_->setStyleSheet("color:#8fc5ff; font-size:12px;");
+    processLbl_->setText("host summary");
     bytesLbl_->setText(formatBytes(bytes));
     packetsLbl_->setText(QLocale().toString(static_cast<qlonglong>(packets)));
 }

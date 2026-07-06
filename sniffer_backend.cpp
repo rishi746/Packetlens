@@ -461,6 +461,12 @@ void SnifferBackend::workerThread() {
                 if (!entry) {
                     entry = parser.find_by_flow_key(key);
                 }
+                if (!entry) {
+                    entry = parser.find_by_local_port(packet_src_port, key.proto);
+                }
+                if (!entry) {
+                    entry = parser.find_by_local_port(packet_dst_port, key.proto);
+                }
                 if (entry) {
                     if (entry->inode != 0) {
                         if (auto pid_opt = parser.inode_to_pid(entry->inode)) {

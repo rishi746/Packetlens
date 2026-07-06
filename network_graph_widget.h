@@ -32,6 +32,13 @@ struct GraphEdge {
     QGraphicsLineItem* line   = nullptr;
 };
 
+struct HostSummary {
+    QString ip;
+    uint64_t bytes = 0;
+    uint64_t packets = 0;
+    uint64_t flows = 0;
+};
+
 class NetworkGraphWidget : public QGraphicsView {
     Q_OBJECT
 
@@ -43,6 +50,8 @@ public:
 signals:
     void nodeSelected(QString ip, uint64_t bytes, uint64_t packets,
                       QString process, quint16 port, QString state);
+    void hostSelected(QString host, QString ip, uint64_t bytes,
+                      uint64_t packets, uint64_t flows);
 
 protected:
     void mousePressEvent(QMouseEvent*)  override;
@@ -67,6 +76,7 @@ private:
     QGraphicsScene* scene_  = nullptr;
     GraphNode*      master_ = nullptr;
     QMap<QString, GraphNode*> hostNodes_;
+    QMap<QString, HostSummary> hostSummaries_;
     QMap<QString, GraphEdge> edges_;
     QMap<QString, QGraphicsLineItem*> hostLinks_;
     QTimer* physTimer_ = nullptr;

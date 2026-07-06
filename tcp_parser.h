@@ -36,6 +36,7 @@ public:
     std::optional<TcpEntry> find_by_tuple(const std::string& src_ip, uint16_t src_port,
                                           const std::string& dst_ip, uint16_t dst_port,
                                           uint8_t protocol);
+    std::optional<TcpEntry> find_by_local_port(uint16_t port, uint8_t protocol);
 
     std::optional<pid_t> inode_to_pid(uint64_t inode);
 

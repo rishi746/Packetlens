@@ -105,12 +105,22 @@ void NetworkGraphWidget::updateFromSnapshot(const std::vector<FlowSnapshot>& sna
 
     QMap<QString, AggRow> agg;
     QSet<QString> activeHosts;
+    hostSummaries_.clear();
     for (const auto& s : snap) {
         QString host = hostLabel(s);
         ServiceEndpoint endpoint = chooseServiceEndpoint(s);
         QString key = QString("%1|%2|%3").arg(host, endpoint.ip).arg(endpoint.port);
 
         activeHosts.insert(host);
+        HostSummary& summary = hostSummaries_[host];
+        summary.bytes += s.bytes;
+        summary.packets += s.packets;
+        summary.flows += 1;
+        if (summary.ip.isEmpty()) {
+            QString src = QString::fromStdString(s.src_ip);
+            QString dst = QString::fromStdString(s.dst_ip);
+            summary.ip = endpoint.ip == src ? dst : src;
+        }
 
         auto& a     = agg[key];
         a.host      = host;
@@ -428,10 +438,17 @@ void NetworkGraphWidget::mouseMoveEvent(QMouseEvent* event) {
 void NetworkGraphWidget::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton && panning_) {
         bool wasClick = (event->pos() - panPressPos_).manhattanLength() < 5;
-        if (wasClick && pressedNode_ && !pressedNode_->isMaster()) {
-            emit nodeSelected(
-                pressedNode_->ip(), pressedNode_->bytes(), pressedNode_->packets(),
-                pressedNode_->process(), pressedNode_->dstPort(), pressedNode_->state());
+        if (wasClick && pressedNode_) {
+            if (pressedNode_->isMaster()) {
+                QString host = pressedNode_->ip();
+                HostSummary summary = hostSummaries_.value(host);
+                emit hostSelected(host, summary.ip, summary.bytes,
+                                  summary.packets, summary.flows);
+            } else {
+                emit nodeSelected(
+                    pressedNode_->ip(), pressedNode_->bytes(), pressedNode_->packets(),
+                    pressedNode_->process(), pressedNode_->dstPort(), pressedNode_->state());
+            }
         }
         pressedNode_ = nullptr;
         panning_ = false;

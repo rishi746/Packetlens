@@ -42,6 +42,8 @@ private slots:
     void onError(QString message);
     void onNodeSelected(QString ip, uint64_t bytes, uint64_t packets,
                         QString process, quint16 port, QString state);
+    void onHostSelected(QString host, QString ip, uint64_t bytes,
+                        uint64_t packets, uint64_t flows);
     void onChooseInterfaces();
     void onHostFilterChanged();
 

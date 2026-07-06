@@ -58,6 +58,8 @@ MainWindow::MainWindow(QWidget* parent)
     // Connect graph node clicks to side panel
     connect(graphWidget_, &NetworkGraphWidget::nodeSelected,
             this,         &MainWindow::onNodeSelected);
+    connect(graphWidget_, &NetworkGraphWidget::hostSelected,
+            this,         &MainWindow::onHostSelected);
 
     timer_ = new QTimer(this);
     connect(timer_, &QTimer::timeout, this, &MainWindow::onRefreshTimer);
@@ -520,4 +522,9 @@ void MainWindow::onChooseInterfaces() {
 void MainWindow::onNodeSelected(QString ip, uint64_t bytes, uint64_t packets,
                                  QString process, quint16 port, QString state) {
     sidePanel_->showNode(ip, bytes, packets, process, port, state);
+}
+
+void MainWindow::onHostSelected(QString host, QString ip, uint64_t bytes,
+                                uint64_t packets, uint64_t flows) {
+    sidePanel_->showHost(host, ip, bytes, packets, flows);
 }

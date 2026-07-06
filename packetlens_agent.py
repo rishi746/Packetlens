@@ -112,6 +112,7 @@ def build_socket_process_map():
 
                     result[(local_ip, local_port, remote_ip, remote_port, proto)] = proc
                     result[(remote_ip, remote_port, local_ip, local_port, proto)] = proc
+                    result[("__local_port__", local_port, proto)] = proc
 
                     if remote_ip in {"0.0.0.0", "::"} and remote_port == 0:
                         result[(local_ip, local_port, "", 0, proto)] = proc
@@ -142,6 +143,14 @@ def resolve_process(flow, socket_processes):
     dst_listen = socket_processes.get((flow["dst_ip"], flow["dst_port"], "", 0, flow["proto_num"]))
     if dst_listen:
         return dst_listen
+
+    src_port_proc = socket_processes.get(("__local_port__", flow["src_port"], flow["proto_num"]))
+    if src_port_proc:
+        return src_port_proc
+
+    dst_port_proc = socket_processes.get(("__local_port__", flow["dst_port"], flow["proto_num"]))
+    if dst_port_proc:
+        return dst_port_proc
 
     return flow.get("process", "")
 

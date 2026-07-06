@@ -189,6 +189,23 @@ optional<TcpEntry> TcpParser::find_by_tuple(const string& src_ip, uint16_t src_p
     return nullopt;
 }
 
+optional<TcpEntry> TcpParser::find_by_local_port(uint16_t port, uint8_t protocol) {
+    if (port == 0) return nullopt;
+
+    optional<TcpEntry> wildcard_match;
+    for (const auto& e : entries) {
+        if (e.protocol != protocol || e.local_port != port) continue;
+
+        if (!is_wildcard_ip(e.remote_ip) && e.remote_port != 0) {
+            return e;
+        }
+        if (!wildcard_match) {
+            wildcard_match = e;
+        }
+    }
+    return wildcard_match;
+}
+
 void TcpParser::refresh_inode_pid_cache() {
     inode_pid_cache_.clear();
 

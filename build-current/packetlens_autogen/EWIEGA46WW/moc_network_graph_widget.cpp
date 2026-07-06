@@ -48,6 +48,9 @@ template <> constexpr inline auto NetworkGraphWidget::qt_create_metaobjectdata<q
         "process",
         "port",
         "state",
+        "hostSelected",
+        "host",
+        "flows",
         "physicsStep"
     };
 
@@ -57,8 +60,13 @@ template <> constexpr inline auto NetworkGraphWidget::qt_create_metaobjectdata<q
             { QMetaType::QString, 3 }, { 0x80000000 | 4, 5 }, { 0x80000000 | 4, 6 }, { QMetaType::QString, 7 },
             { QMetaType::UShort, 8 }, { QMetaType::QString, 9 },
         }}),
+        // Signal 'hostSelected'
+        QtMocHelpers::SignalData<void(QString, QString, uint64_t, uint64_t, uint64_t)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 11 }, { QMetaType::QString, 3 }, { 0x80000000 | 4, 5 }, { 0x80000000 | 4, 6 },
+            { 0x80000000 | 4, 12 },
+        }}),
         // Slot 'physicsStep'
-        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -83,12 +91,15 @@ void NetworkGraphWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->nodeSelected((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<quint16>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[6]))); break;
-        case 1: _t->physicsStep(); break;
+        case 1: _t->hostSelected((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<uint64_t>>(_a[5]))); break;
+        case 2: _t->physicsStep(); break;
         default: ;
         }
     }
     if (_c == QMetaObject::IndexOfMethod) {
         if (QtMocHelpers::indexOfMethod<void (NetworkGraphWidget::*)(QString , uint64_t , uint64_t , QString , quint16 , QString )>(_a, &NetworkGraphWidget::nodeSelected, 0))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (NetworkGraphWidget::*)(QString , QString , uint64_t , uint64_t , uint64_t )>(_a, &NetworkGraphWidget::hostSelected, 1))
             return;
     }
 }
@@ -112,14 +123,14 @@ int NetworkGraphWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 3;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
+        _id -= 3;
     }
     return _id;
 }
@@ -128,5 +139,11 @@ int NetworkGraphWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 void NetworkGraphWidget::nodeSelected(QString _t1, uint64_t _t2, uint64_t _t3, QString _t4, quint16 _t5, QString _t6)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 0, nullptr, _t1, _t2, _t3, _t4, _t5, _t6);
+}
+
+// SIGNAL 1
+void NetworkGraphWidget::hostSelected(QString _t1, QString _t2, uint64_t _t3, uint64_t _t4, uint64_t _t5)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1, _t2, _t3, _t4, _t5);
 }
 QT_WARNING_POP
